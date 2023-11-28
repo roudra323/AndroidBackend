@@ -14,8 +14,12 @@ const signupSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    dept: {
+        type: String,
+        required: true,
+    },
     batch: {
-        type: Number,
+        type: String,
         required: true,
     },
     bloodGroup: {

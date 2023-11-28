@@ -10,7 +10,7 @@ const signupData = async (req, res) => {
         await signup.save();
         
         res.status(200).json({
-            message: "Todo was inserted successfully!",
+            message: "Singup successfully!",
         });
     } catch (err) {
         console.error(err);

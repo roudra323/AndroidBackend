@@ -9,7 +9,8 @@ app.use('/auth', authRouter);
 app.use('/appointment', appointmentRouter);
 
 
-app.get('/', (req, res) => {
+app.post('/user', (req, res) => {
+    console.log(req.body);
     res.send('Home page..');
 });
 

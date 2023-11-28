@@ -5,18 +5,17 @@ const SignupModel = mongoose.model("Signup", signupSchema);
 
 const loginData= async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body);
 
     try {
         // Check if the user with the provided email exists
         const user = await SignupModel.findOne({ email });
-
+        console.log(user);
         if (!user) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-
         // Compare the provided password with the hashed password stored in the database
         const passwordMatch = await bcrypt.compare(password, user.password);
-
         if (!passwordMatch) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
@@ -26,7 +25,7 @@ const loginData= async (req, res) => {
         res.status(200).json({ message: "Login successful" });
 
     } catch (error) {
-        console.error(error);
+        // console.error("not found");
         res.status(500).json({ error: "Server error" });
     }
 };
