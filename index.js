@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
     res.status(200).send('Home page..');
 });
 
-const uri = process.env.URI;
+const uri = process.env.uri;
 
 async function connect() {
     try {
