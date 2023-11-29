@@ -1,4 +1,3 @@
-const express = require("express");
 const mongoose = require("mongoose");
 const signupSchema = require("../model/signupSchema");
 const SignupModel = mongoose.model("Signup", signupSchema);
@@ -6,9 +5,7 @@ const SignupModel = mongoose.model("Signup", signupSchema);
 const signupData = async (req, res) => {
     try {
         const signup = new SignupModel(req.body);
-        console.log(req.body);
         await signup.save();
-        
         res.status(200).json({
             message: "Singup successfully!",
         });

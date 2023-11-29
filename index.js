@@ -1,17 +1,25 @@
 const express = require('express');
-const authRouter = require("./router/authenticationRouter.js");
-const appointmentRouter = require("./router/authenticationRouter.js");
+const authRouter = require("./router/authenticationRouter");
+const appointmentRouter = require("./router/authenticationRouter");
+const profileRouter = require("./router/profileRouter");
 const mongoose = require("mongoose");
 const app = express();
+
 
 app.use(express.json());
 app.use('/auth', authRouter);
 app.use('/appointment', appointmentRouter);
+app.use('/profile',profileRouter);
 
 
 app.post('/user', (req, res) => {
     console.log(req.body);
-    res.send('Home page..');
+    res.status(200).send('Home page..');
+});
+
+app.get('/', (req, res) => {
+    console.log(req.body);
+    res.status(200).send('Home page..');
 });
 
 const uri = "mongodb+srv://nahid36:nahid36321@jnuhealth.9rwx41w.mongodb.net/?retryWrites=true&w=majority";

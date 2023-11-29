@@ -36,6 +36,10 @@ const signupSchema = mongoose.Schema({
         minlength: [6, "Password must be at least 6 characters"],
         maxlength: [255, "Password cannot exceed 255 characters"],
     },
+    profilePicture: {
+        type: String,
+        default:"demo.jpg",
+    },
     date: {
         type: Date,
         default: Date.now,
