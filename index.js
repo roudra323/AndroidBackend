@@ -21,7 +21,8 @@ app.get('/', (req, res) => {
     res.status(200).send('Home page..');
 });
 
-const uri = "mongodb+srv://nahid36:nahid36321@jnuhealth.9rwx41w.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.URI;
+
 async function connect() {
     try {
         await mongoose.connect(uri);
