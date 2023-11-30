@@ -1,15 +1,24 @@
 require("dotenv").config();
 const express = require('express');
-const authRouter = require("./router/authenticationRouter");
-const appointmentRouter = require("./router/authenticationRouter");
-const profileRouter = require("./router/profileRouter");
 const mongoose = require("mongoose");
+
+const authRouter = require("./router/authenticationRouter");
+const appointmentRouter = require("./router/appointmentRouter");
+const profileRouter = require("./router/profileRouter");
+const articleRouter = require("./router/articleRouter");
+const psychologistsRouter = require("./router/psychologistsRouter");
+
+
 const app = express();
 
 app.use(express.json());
 app.use('/auth', authRouter);
 app.use('/appointment', appointmentRouter);
 app.use('/profile',profileRouter);
+app.use('/article',articleRouter);
+app.use('/psychologist',psychologistsRouter);
+
+
 
 app.post('/user', (req, res) => {
     console.log(req.body);
