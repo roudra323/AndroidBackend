@@ -1,13 +1,17 @@
 const mongoose = require("mongoose");
 const articleSchema = require("../model/article");
 const Article = mongoose.model("Artical", articleSchema);
+const path = require("path");
+const fs = require("fs");
 
 const articlePost = async (req, res) => {
     try {
         const art = new Article(req.body);
+        art.articlePicture = req.file.filename;
+        console.log(art.articlePicture);
         await art.save();
         res.status(200).json({
-            message: "Singup successfully!",
+            message: "Add aritcle successfully!",
         });
     } catch (err) {
         console.error(err);
@@ -36,7 +40,7 @@ const articleGetOne = async (req, res) => {
 
 const articleGetAll = async (req, res) => {
     try {
-        const articles =  await Article.find();
+        const articles = await Article.find();
 
         if (articles.length === 0) {
             return res.status(404).json({ message: "No articles found" });
@@ -49,4 +53,79 @@ const articleGetAll = async (req, res) => {
     }
 };
 
-module.exports = {articlePost,articleGetOne,articleGetAll};
+const editPost = async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (!req.body) {
+            return res.status(400).json({ message: "Request body is empty" });
+        }
+
+        const article = await Article.findOne({ _id: id });
+        if (!article) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        if (req.file && article.articlePicture && article.articlePicture != "demo.jpg") {
+            const oldProfilePicturePath = path.join(__dirname, "..", "uploads", article.articlePicture);
+            // console.log(oldProfilePicturePath);
+            try {
+                if (fs.existsSync(oldProfilePicturePath)) {
+                    fs.unlinkSync(oldProfilePicturePath);
+                }
+            } catch (deleteError) {
+                console.error("Error deleting old profile picture:", deleteError);
+            }
+            req.body.articlePicture = req.file.filename;
+
+        }
+
+
+
+        const result = await Article.updateOne({ _id: id }, { $set: req.body });
+        if (result.nModified === 0) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        if (!result.acknowledged) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        res.json({ message: "Article updated successfully", result });
+    } catch (error) {
+        console.error("Error updating article:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+const deletePost = async (req, res) => {
+    try {
+
+        const _id = req.params.id;
+        const article = await Article.findOne({ _id });
+        if (!article) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        if (article.articlePicture && article.articlePicture != "demo.jpg") {
+            const oldProfilePicturePath = path.join(__dirname, "..", "uploads", article.articlePicture);
+            // console.log(oldProfilePicturePath);
+            try {
+                if (fs.existsSync(oldProfilePicturePath)) {
+                    fs.unlinkSync(oldProfilePicturePath);
+                }
+            } catch (deleteError) {
+                console.error("Error deleting old profile picture:", deleteError);
+            }
+        }
+
+        const result = await Article.deleteOne({ _id });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+
+        res.json({ message: "Article deleted successfully", result });
+    } catch (error) {
+        console.error("Error deleting article:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+module.exports = { articlePost, articleGetOne, articleGetAll, editPost, deletePost };

@@ -12,7 +12,7 @@ const article = mongoose.Schema({
     posterId: {
         type: String,
     },
-    Picture: {
+    articlePicture: {
         type: String,
         default:"demo.jpg",
     },
