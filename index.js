@@ -7,16 +7,17 @@ const appointmentRouter = require("./router/appointmentRouter");
 const profileRouter = require("./router/profileRouter");
 const articleRouter = require("./router/articleRouter");
 const psychologistsRouter = require("./router/psychologistsRouter");
-
+const { isAuth } = require("./middleware/isAuth");
 
 const app = express();
 
 app.use(express.json());
 app.use('/auth', authRouter);
 app.use('/appointment', appointmentRouter);
-app.use('/profile',profileRouter);
-app.use('/article',articleRouter);
-app.use('/psychologist',psychologistsRouter);
+app.use('/profile', profileRouter);
+app.use('/article', articleRouter);
+app.use('/psychologist', psychologistsRouter);
+app.use('/image',express.static('uploads'));
 
 
 
@@ -25,8 +26,7 @@ app.post('/user', (req, res) => {
     res.status(200).send('Home page..');
 });
 
-app.get('/', (req, res) => {
-    console.log(req.body);
+app.get('/', isAuth, (req, res) => {
     res.status(200).send('Home page..');
 });
 

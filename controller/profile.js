@@ -68,7 +68,6 @@ const changePassword = async (req, res) => {
     }
 };
 
-
 const changeProfilePicture = async (req, res) => {
     try {
         const _id = req.params.id;

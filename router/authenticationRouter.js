@@ -6,4 +6,5 @@ const loginData = require("../controller/login");
 Router.post("/signup", signupData);
 Router.post("/login",loginData);
 
+
 module.exports = Router;
