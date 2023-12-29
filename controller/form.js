@@ -1,7 +1,6 @@
 const CounselingModel = require("../model/appointment");
 
 const formDataAppoi = async (req, res) => {
-  console.log(req.body);
   try {
     const formData = req.body;
     console.log(formData);

@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const counselingSchema = new mongoose.Schema({
   userId: String,
   name: String,
-  department: String,
-  mobile: String,
+  dept: String,
+  phone: String,
   age: String,
   email: String,
-  address: String,
+  presentAddress: String,
   date: String,
   takenBefore: Boolean,
   heradAboutUs: [String],
@@ -17,7 +17,7 @@ const counselingSchema = new mongoose.Schema({
   counselingTime: [String],
   counselingDay: [String],
   status: String,
-});
+})
 
 const CounselingModel = mongoose.model('Counseling', counselingSchema);
 
