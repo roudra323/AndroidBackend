@@ -1,5 +1,11 @@
 const Router = require("express").Router();
-const {formDataAppoi,getFormDataAll,getFormDatabyId,getDatabyId,deleteData} = require("../controller/form");
+const {
+  formDataAppoi,
+  getFormDataAll,
+  getFormDatabyId,
+  getDatabyId,
+  deleteData,
+} = require("../controller/form");
 
 Router.post("/", formDataAppoi); // add data
 Router.get("/", getFormDataAll); // all data
