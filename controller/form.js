@@ -2,11 +2,13 @@
 const CounselingModel = require('../model/appointment');
 
 const formDataAppoi = async (req, res) => {
+    const userId = req.params.id;
     try {
         const formData = req.body;
         console.log(formData);
         const counselingRecord = new CounselingModel(formData);
         counselingRecord.status = 'pending';
+        counselingRecord.userId = userId;
         const savedRecord = await counselingRecord.save();
         res.status(201).json({ message: 'Form data saved successfully' });
 
