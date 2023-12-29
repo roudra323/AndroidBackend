@@ -45,7 +45,6 @@ const changePassword = async (req, res) => {
   try {
     const id = req.params.id;
     const { oldPassword, newPassword } = req.body;
-    console.log(req.body);
     if (!oldPassword || !newPassword) {
       return res
         .status(400)
