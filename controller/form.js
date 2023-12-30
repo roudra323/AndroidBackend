@@ -1,11 +1,14 @@
 const CounselingModel = require("../model/appointment");
 
 const formDataAppoi = async (req, res) => {
+  console.log(req.params.id);
+  const userId = req.params.id;
   try {
     const formData = req.body;
-    console.log(formData);
+    console.log("This is formData", formData);
     const counselingRecord = new CounselingModel(formData);
     counselingRecord.status = "pending";
+    counselingRecord.userId = userId;
     const savedRecord = await counselingRecord.save();
     res.status(201).json({ message: "Form data saved successfully" });
   } catch (error) {
@@ -30,11 +33,11 @@ const getFormDataAll = async (req, res) => {
   }
 };
 const getFormDatabyId = async (req, res) => {
-  console.log(req.params.id);
-  const id = req.params.id;
-  console.log(id);
+  // console.log(req.params.id);
+  const userId = req.params.userId;
+  console.log(userId);
   try {
-    const formData = await CounselingModel.find({ id });
+    const formData = await CounselingModel.find({ userId });
     if (!formData) {
       return res.status(404).json({ error: "Form data not found" });
     }
