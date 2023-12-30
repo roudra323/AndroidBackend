@@ -4,6 +4,7 @@ const signupSchema = require("../model/signupSchema");
 const User = mongoose.model("Signup", signupSchema);
 const path = require("path");
 const fs = require("fs");
+
 const profileData = async (req, res) => {
   try {
     const _id = req.params.id;
@@ -68,7 +69,7 @@ const changePassword = async (req, res) => {
 };
 
 const changeProfilePicture = async (req, res) => {
-  //   console.log(req.file);
+  console.log(req.file);
   try {
     const _id = req.params.id;
     if (!req.file) {
