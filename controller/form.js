@@ -35,10 +35,10 @@ const getFormDataAll = async (req, res) => {
     }
 };
 const getFormDatabyId = async (req, res) => {
-    const id = req.params.id;
-    console.log(id);
+    const userId = req.params.userId;
+    console.log(userId);
     try {
-        const formData = await CounselingModel.find({ id });
+        const formData = await CounselingModel.find({ userId });
         if (!formData) {
             return res.status(404).json({ error: 'Form data not found' });
         }
