@@ -38,7 +38,7 @@ const getFormDatabyId = async (req, res) => {
     const userId = req.params.userId;
     console.log(userId);
     try {
-        const formData = await CounselingModel.find({ userId });
+        const formData = await CounselingModel.find({ userId }); 
         if (!formData) {
             return res.status(404).json({ error: 'Form data not found' });
         }
@@ -79,6 +79,24 @@ const deleteData = async (req, res) => {
     }
 };
 
+const changeStatus = async (req, res) => {
+    const id = req.params.id;
+    // console.log(id);
+    try {
+        const formData = await CounselingModel.findOne({ _id: id });
+        if (!formData) {
+            return res.status(404).json({ error: 'Form data not found' });
+        }
+        formData.status = 'confirmed';
+        await formData.save();
+        res.status(200).json({ message: 'Status updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 
 
-module.exports = { formDataAppoi, getFormDataAll, getFormDatabyId,getDatabyId,deleteData};
+
+
+module.exports = { formDataAppoi, getFormDataAll, getFormDatabyId,getDatabyId,deleteData,changeStatus};
