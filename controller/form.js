@@ -88,6 +88,7 @@ const changeStatus = async (req, res) => {
             return res.status(404).json({ error: 'Form data not found' });
         }
         formData.status = 'confirmed';
+        formData.psychologistId = req.body.psychologistId;
         await formData.save();
         res.status(200).json({ message: 'Status updated successfully' });
     } catch (error) {
