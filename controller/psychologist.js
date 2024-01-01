@@ -20,6 +20,7 @@ const signup = async (req, res) => {
     try {
         // console.log(req.body);
         const signup = new User(req.body);
+        signup.about = " ";
         await signup.save();
         res.status(200).json({
             message: "Singup successfully!",

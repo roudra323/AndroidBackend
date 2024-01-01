@@ -7,8 +7,9 @@ const fs = require("fs");
 const articlePost = async (req, res) => {
     try {
         const art = new Article(req.body);
-        art.articlePicture = req.file.filename;
-        console.log(art.articlePicture);
+        // console.log(req.body);
+        // art.articlePicture = req.file.filename;
+        // console.log(art.articlePicture);
         await art.save();
         res.status(200).json({
             message: "Add aritcle successfully!",
@@ -61,9 +62,15 @@ const editPost = async (req, res) => {
         }
 
         const article = await Article.findOne({ _id: id });
+
         if (!article) {
             return res.status(404).json({ message: "Article not found" });
         }
+        const posterId = req.body.posterId;
+        if (article.posterId != posterId) {
+            return res.status(404).json({ message: "You can only edit your own article" });
+        }
+
         if (req.file && article.articlePicture && article.articlePicture != "demo.jpg") {
             const oldProfilePicturePath = path.join(__dirname, "..", "uploads", article.articlePicture);
             // console.log(oldProfilePicturePath);
@@ -87,7 +94,7 @@ const editPost = async (req, res) => {
         if (!result.acknowledged) {
             return res.status(404).json({ message: "Article not found" });
         }
-        res.json({ message: "Article updated successfully", result });
+        res.json({ message: "Article updated successfully"});
     } catch (error) {
         console.error("Error updating article:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -98,10 +105,19 @@ const deletePost = async (req, res) => {
     try {
 
         const _id = req.params.id;
+        // console.log(_id);
         const article = await Article.findOne({ _id });
         if (!article) {
             return res.status(404).json({ message: "Article not found" });
         }
+
+        const posterId = req.body.posterId;
+        // console.log(posterId);
+
+        if (article.posterId != posterId) {
+            return res.status(404).json({ message: "You can only delete your own article" });
+        }
+
         if (article.articlePicture && article.articlePicture != "demo.jpg") {
             const oldProfilePicturePath = path.join(__dirname, "..", "uploads", article.articlePicture);
             // console.log(oldProfilePicturePath);
@@ -120,7 +136,7 @@ const deletePost = async (req, res) => {
             return res.status(404).json({ message: "Article not found" });
         }
 
-        res.json({ message: "Article deleted successfully", result });
+        res.json({ message: "Article deleted successfully"});
     } catch (error) {
         console.error("Error deleting article:", error);
         res.status(500).json({ message: "Internal server error" });

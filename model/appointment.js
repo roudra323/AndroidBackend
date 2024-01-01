@@ -17,7 +17,12 @@ const counselingSchema = new mongoose.Schema({
   counselingTime: [String],
   counselingDay: [String],
   status: String,
+<<<<<<< HEAD
+  psychologistId: String,
+})
+=======
 });
+>>>>>>> 623b681b3cf60e0d962c9f438bbde3d03ae6de91
 
 const CounselingModel = mongoose.model("Counseling", counselingSchema);
 
