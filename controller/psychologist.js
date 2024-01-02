@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const userSchema = require("../model/psychologist");
 const User = mongoose.model("Psychologist", userSchema);
+const checkEmailSchema = require("../model/checkEmail");
+
 
 const getDataAll = async (req, res) => {
     try {
@@ -18,7 +20,11 @@ const getDataAll = async (req, res) => {
 
 const signup = async (req, res) => {
     try {
-        // console.log(req.body);
+        const email = req.body.email;
+        const checkEmail = await checkEmailSchema.findOneAndDelete({ email: email });
+        if (!checkEmail) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
         const signup = new User(req.body);
         signup.about = " ";
         await signup.save();
@@ -33,7 +39,7 @@ const signup = async (req, res) => {
     }
 }
 
-const signin= async (req, res) => {
+const signin = async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -46,11 +52,41 @@ const signin= async (req, res) => {
         }
         const id = user._id;
         const name = user.name;
-        res.status(200).json({ message: "Login successful",id,name});
+        res.status(200).json({ message: "Login successful", id, name });
 
     } catch (error) {
         res.status(500).json({ error: "Server error" });
     }
 };
 
-module.exports = { getDataAll,signup,signin };
+const addEmail = async (req, res) => {
+    try {
+        const _id = req.params.UserId;
+        const user = await User.findById(_id);
+        if (!user || !user.isSupperAdmin) {
+            return res.status(401).json({ message: "You are not a supper admin" });
+        }
+        const { email } = req.body;
+        const isExist = await User.findOne({ email: email });
+        if (isExist) {
+            return res.status(401).json({ error: "Email already exists" });
+        }
+
+
+        const newEmail = new checkEmailSchema({ email: email });
+        await newEmail.save();
+
+        res.status(200).json({
+            message: "Add email successfully!",
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: "There was a server-side error!",
+        });
+    }
+};
+
+
+
+module.exports = { getDataAll, signup, signin, addEmail };
