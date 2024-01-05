@@ -11,7 +11,7 @@ const getDataAll = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-res.json({ user });
+        res.json({ user });
     } catch (error) {
         console.error("Error fetching user:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -25,7 +25,7 @@ const signup = async (req, res) => {
         if (!checkEmail) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-const signup = new User(req.body);
+        const signup = new User(req.body);
         signup.about = " ";
         await signup.save();
         res.status(200).json({
@@ -55,7 +55,7 @@ const signin = async (req, res) => {
         res.status(200).json({ message: "Login successful", id, name });
 
     } catch (error) {
-                res.status(500).json({ error: "Server error" });
+        res.status(500).json({ error: "Server error" });
     }
 };
 
