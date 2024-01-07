@@ -1,20 +1,32 @@
-
+const { text } = require("express");
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-const sendEmail = async (email, subject, text) => {
-  var api_key = process.env.MAILGUN_API_KEY;
-  var domain = process.env.MAILGUN_DOMAIN;
-  var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
+const sendEmail = async (user,email, subject, link) => {
 
-  var data = {
-    from: 'Excited User <me@samples.mailgun.org>',
+  let transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD
+    }
+  });
+
+  let info = await transporter.sendMail({
+    from: process.env.SMTP_USER,
     to: email,
     subject: subject,
-    text: text,
-  };
-
-  mailgun.messages().send(data, function (error, body) {
-    console.log(body);
+    html: `
+    <p>Dear ${user},</p>
+    <p>Thank you for signing up with JnU Counceling Center. To complete the registration process and verify your account, please click on the following link:</p>
+    <p><a href="${link}">Click Here to Verify Your Account</a></p>
+    <p>If the above link does not work, you can copy and paste the following URL into your browser's address bar:</p>
+    <p>${link}</p>
+    <p>Thank you for registration. If you did not create an account, please ignore this email.</p>
+    <p>Best regards,<br>JnU Counceling Center</p>
+  `,
   });
 };
 
