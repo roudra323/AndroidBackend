@@ -9,7 +9,7 @@ const Token = require("../model/token");
 const signupData = async (req, res) => {
     try {
         const { email } = req.body;
-        console.log(req.body);
+        // console.log(req.body);
         let user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({
@@ -26,11 +26,10 @@ const signupData = async (req, res) => {
         }).save();
 
         const message = `${process.env.BASE_URL}/auth/verify/${user._id}/${token.token}`;
-        await sendEmail(user.email, "Verify Email", message);
+        await sendEmail(user.name,user.email, "Verify Email", message);
         console.log(message);
 
         res.send("An Email sent to your account please verify");
-
 
     } catch (err) {
         console.error(err);
