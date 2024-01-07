@@ -51,6 +51,10 @@ const user = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  isSupperAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 user.pre("save", async function (next) {
