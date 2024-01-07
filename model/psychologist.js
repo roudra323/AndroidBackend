@@ -18,6 +18,14 @@ const user = mongoose.Schema({
     type: String,
     required: true,
   },
+  dept: {
+    type: String,
+    required: true,
+  },
+  batch: {
+    type: String,
+    required: true,
+  },
   about: {
     type: String,
   },
