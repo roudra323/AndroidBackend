@@ -16,7 +16,7 @@ const signupSchema = mongoose.Schema({
   },
   dob: {
     type: String,
-    required: true,
+    required: false,
   },
   dept: {
     type: String,
